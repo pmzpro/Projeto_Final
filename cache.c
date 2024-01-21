@@ -6,7 +6,7 @@
 #define MAX_LINE_LENGTH 1024
 Cache geocaches[MAX_CODES];
 
-// Flag para rastrear se o arquivo foi carregado
+// varivel para verificar se o arquivo foi carregado
 int fileLoaded = 0;
 
 // Função (FoundP) para comparar duas caches e verificar se são iguais.
@@ -139,7 +139,7 @@ void listGeocaches(const Cache geocaches[], int geocacheCount) {
     }
 }
 
-// Função para listar geocaches com porcentagem de aparecimento
+// Função para listar geocaches com percentagem de aparecimento
 void foundPGeocaches(const Cache geocaches[], int geocacheCount) {
     if (geocaches == NULL || geocacheCount == 0) {
         printf("\n\033[1;33mNo geocaches to display.\n\033[0m");
