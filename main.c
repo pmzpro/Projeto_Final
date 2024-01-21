@@ -27,7 +27,7 @@ int main() {
             case 1:
             //Função LOAD - lê o ficheiro e guarda os dados na memória.
                 if (fileLoaded > 0) {
-                printf("\n\033[1;33mFile already loaded.\n\033[0m");
+                printf("\n\033[1;33mCache data exists. Please clear it first.\n\033[0m");
                  } else {
                 fileLoaded += 1;
                 printf("\n\033[1;33mEnter filename: \033[0m");

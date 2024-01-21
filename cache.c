@@ -25,7 +25,7 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
     // Abre o arquivo no modo de leitura
     FILE *f = fopen(file, "r");
     if (!f) {
-        printf("\n\033[1;31mFile could not be opened.\n\033[0m");
+        printf("\n\033[1;31mFile not found.\n\033[0m");
         return;
     }
  
