@@ -181,9 +181,5 @@ void foundPGeocaches(const Cache geocaches[], int geocacheCount) {
     // Imprime os detalhes de cada cache e a percentagem de aparecimento
     for (int i = 0; i < geocacheCount; i++) {
         printGeocacheDetails(geocaches[i], i);
-
-        // Calcula a percentagem de aparecimento da cache
-        float percentage = (float)geocaches[i].founds / (geocaches[i].not_found + geocaches[i].founds) * 100;
-        printf("Percentage of appearance: %.2f%%\n", percentage);
     }
 }
