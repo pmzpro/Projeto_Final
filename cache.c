@@ -6,6 +6,15 @@
 #define MAX_LINE_LENGTH 1024
 Cache geocaches[MAX_CODES];
 
+// Função para calcular a percentagem de aparecimento e atribuir ao campo percentage
+void calculatePercentage(Cache *cache) {
+    if (cache->not_found + cache->founds == 0) {
+        cache->percentage = 0.0; // Evita divisão por zero
+    } else {
+        cache->percentage = ((float)cache->founds / (cache->not_found + cache->founds)) * 100;
+    }
+}
+
 // varivel para verificar se o arquivo foi carregado
 int fileLoaded = 0;
 
@@ -45,6 +54,8 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
         char *token = strtok(line, delimiter);
  
         // Atribui os tokens às variáveis da estrutura Cache
+        if (token) gc.percentage = atof(token);
+        token = strtok(NULL, delimiter);
         if (token) gc.code = strdup(token);
         token = strtok(NULL, delimiter);
         if (token) gc.name = strdup(token);
@@ -76,6 +87,9 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
         if (token) gc.favourites = atoi(token);
         token = strtok(NULL, delimiter);
         if (token) gc.altitude = atoi(token);
+
+        // Calcula a percentagem de aparecimento para a geocache atual
+        calculatePercentage(&gc);
  
         // Verifica se a geocache já existe no array antes de armazená-la
         int cacheExists = 0;
@@ -90,6 +104,8 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
         if (!cacheExists) {
             geocaches[*geocacheCount] = gc;
             (*geocacheCount)++;
+             // Calcula a percentagem de aparecimento para a geocache atual
+            calculatePercentage(&geocaches[*geocacheCount - 1]);
         }
     }
  
@@ -103,8 +119,9 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
 }
 // Mostra as geocaches que estão guardadas na memória (LOAD)
 void printGeocacheDetails(const Cache cache, int index) {
-    printf("\n\033[1;33mCache %d:\033[0m \n Code: %s, Name: %s, State: %s, Owner: %s, Latitude: %.6f, Longitude: %.6f, Kind: %s, Size: %s, Difficulty: %.1f, Terrain: %.1f, Status: %s, Hidden date: %s, Founds: %d, Not founds: %d, Favourites: %d, Altitude: %d\n",
+    printf("\n\033[1;33mCache %d:\033[0m \n Percentage of appearance: %.2f%%\n Code: %s, Name: %s, State: %s, Owner: %s, Latitude: %.6f, Longitude: %.6f, Kind: %s, Size: %s, Difficulty: %.1f, Terrain: %.1f, Status: %s, Hidden date: %s, Founds: %d, Not founds: %d, Favourites: %d, Altitude: %d\n",
         index + 1,
+        cache.percentage,
         cache.code,
         cache.name,
         cache.state,

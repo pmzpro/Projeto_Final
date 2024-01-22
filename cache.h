@@ -17,6 +17,7 @@ typedef struct {
     int not_found;
     int favourites;
     int altitude;
+    float percentage;
 } Cache;
 
 
