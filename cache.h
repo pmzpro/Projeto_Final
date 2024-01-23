@@ -26,3 +26,6 @@ void clearGeocaches(int *geocacheCount);
 void listGeocaches(const Cache geocaches[], int geocacheCount);
 void loadFile(const char file[], Cache geocaches[], int *geocacheCount);
 void foundPGeocaches(const Cache geocaches[], int geocacheCount);
+void center(const Cache geocaches[], int geocacheCount);
+void editGeocache(Cache *geocaches, int geocacheCount);
+void searchGeocache(const Cache geocaches[], int geocacheCount);
