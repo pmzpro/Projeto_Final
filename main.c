@@ -19,7 +19,7 @@ int main() {
         printf("\n******************************");
         printf("\n********* GEOCACHING *********\n");
         printf("******************************\n");
-        printf("\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n0 - QUIT\nChoose an option: ");
+        printf("\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n0 - QUIT\n\nChoose an option: ");
         scanf("%d", &menuOption);
         getchar(); // Limpa o buffer do teclado
 
