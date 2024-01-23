@@ -54,8 +54,6 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
         char *token = strtok(line, delimiter);
  
         // Atribui os tokens às variáveis da estrutura Cache
-        if (token) gc.percentage = atof(token);
-        token = strtok(NULL, delimiter);
         if (token) gc.code = strdup(token);
         token = strtok(NULL, delimiter);
         if (token) gc.name = strdup(token);
@@ -119,9 +117,9 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
 }
 // Mostra as geocaches que estão guardadas na memória (LOAD)
 void printGeocacheDetails(const Cache cache, int index) {
-    printf("\n\033[1;33mCache %d:\033[0m \n Percentage of appearance: %.2f%%\n Code: %s, Name: %s, State: %s, Owner: %s, Latitude: %.6f, Longitude: %.6f, Kind: %s, Size: %s, Difficulty: %.1f, Terrain: %.1f, Status: %s, Hidden date: %s, Founds: %d, Not founds: %d, Favourites: %d, Altitude: %d\n",
+    printf("\n\033[1;33mCache %d:\033[0m \n Code: %s, Name: %s, State: %s, Owner: %s, Latitude: %.6f, Longitude: %.6f, Kind: %s, Size: %s, Difficulty: %.1f, Terrain: %.1f, Status: %s, Hidden date: %s, Founds: %d, Not founds: %d, Favourites: %d, Altitude: %d\n",
         index + 1,
-        cache.percentage,
+        // cache.percentage,
         cache.code,
         cache.name,
         cache.state,
@@ -156,30 +154,18 @@ void listGeocaches(const Cache geocaches[], int geocacheCount) {
     }
 }
 
-// Função para listar geocaches com percentagem de aparecimento
+// Função para listar geocaches com porcentagem de aparecimento
 void foundPGeocaches(const Cache geocaches[], int geocacheCount) {
     if (geocaches == NULL || geocacheCount == 0) {
         printf("\n\033[1;33mNo geocaches to display.\n\033[0m");
         return;
     }
 
-
-    // Cria um array para contar as ocorrências de cada cache
-    int occurrences[MAX_CODES] = {0};
-
-    // Conta as ocorrências de cada cache
-    for (int i = 0; i < geocacheCount; i++) {
-        occurrences[i]++;
-        for (int j = i + 1; j < geocacheCount; j++) {
-            if (strcmp(geocaches[i].code, geocaches[j].code) == 0) {
-                occurrences[i]++;
-                occurrences[j]++;
-            }
-        }
-    }
-
     // Imprime os detalhes de cada cache e a percentagem de aparecimento
     for (int i = 0; i < geocacheCount; i++) {
+        // Imprime a percentagem de aparecimento antes das informações da cache
+
+        // Imprime os detalhes da cache
         printGeocacheDetails(geocaches[i], i);
     }
 }
