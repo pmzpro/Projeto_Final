@@ -19,7 +19,7 @@ int main() {
         printf("\033[1;32m\n******************************\033[0m");
         printf("\033[1;32m\n********* GEOCACHING *********\033[0m\n");
         printf("\033[1;32m******************************\033[0m\n");
-        printf("\033[1;37m\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n0 - QUIT\n\n\033[0m\033[1;32mChoose an option: \033[0m");
+        printf("\033[1;37m\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n5 - SEARCH\n6 - EDIT\n7 - Center\n0 - QUIT\n\n\033[0m\033[1;32mChoose an option: \033[0m");
         scanf("%d", &menuOption);
         getchar(); // Limpa o buffer do teclado
 
@@ -47,6 +47,18 @@ int main() {
             case 4:
             //Função FOUNP - mostra a percentagem de aparecimento da cache.
                 foundPGeocaches(geocaches, geocacheCount);
+                break;
+            case 5:
+            //Função SEARCH - procura uma geocache pelo código
+                searchGeocache(geocaches, geocacheCount);
+                break;
+            case 6:
+            // Função EDIT - edita informações de uma geocache
+                editGeocache(geocaches, geocacheCount);
+                break;
+            case 7:
+            // Função CENTER - calcula média e desvio padrão das latitudes e longitudes
+                center(geocaches, geocacheCount);
                 break;
             case 0:
             //Função QUIT - Termina o programa.
