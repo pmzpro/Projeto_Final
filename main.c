@@ -16,10 +16,10 @@ int main() {
 
     do {
         // Menu Geocache
-        printf("\033[1;32m\n******************************\033[0m");
-        printf("\033[1;32m\n********* GEOCACHING *********\033[0m\n");
-        printf("\033[1;32m******************************\033[0m\n");
-        printf("\033[1;37m\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n0 - QUIT\n\n\033[0m\033[1;32mChoose an option: \033[0m");
+        printf("\n******************************");
+        printf("\n********* GEOCACHING *********\n");
+        printf("******************************\n");
+        printf("\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n0 - QUIT\nChoose an option: ");
         scanf("%d", &menuOption);
         getchar(); // Limpa o buffer do teclado
 
@@ -27,10 +27,10 @@ int main() {
             case 1:
             //Função LOAD - lê o ficheiro e guarda os dados na memória.
                 if (fileLoaded > 0) {
-                printf("\n\033[1;33mCache data exists. Please clear it first.\n\033[0m");
+                printf("\nCache data exists. Please clear it first.\n");
                  } else {
                 fileLoaded += 1;
-                printf("\n\033[1;33mEnter filename: \033[0m");
+                printf("\nEnter filename: ");
                 scanf("%255s", file);
                 getGeocaches(file, geocaches, &geocacheCount);
                  } 
@@ -50,12 +50,12 @@ int main() {
                 break;
             case 0:
             //Função QUIT - Termina o programa.
-                printf("\n\033[1;31mExit Success!\033[0m\n");
+                printf("\nExit Success!\n");
                 printf("\n");
                 return EXIT_SUCCESS;
                 break;
             default:
-                printf("Invalid option.\n");
+                printf("\nInvalid option.\n");
         }
     } while (menuOption != 0); // O menu é apresentando até ser selecionada a opção 0 - Quit.
 

@@ -16,7 +16,7 @@ int compareCaches(const Cache *cache1, const Cache *cache2) {
 // Limpa as caches da memória.
 void clearGeocaches(int *geocacheCount) {
     *geocacheCount = 0;
-    printf("\n\033[1;33mGeocaches cleared.\n\033[0m");
+    printf("\nGeocaches cleared.\n");
 }
  
 void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
@@ -25,7 +25,7 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
     // Abre o arquivo no modo de leitura
     FILE *f = fopen(file, "r");
     if (!f) {
-        printf("\n\033[1;31mFile not found.\n\033[0m");
+        printf("\nFile not found.\n");
         return;
     }
  
@@ -97,14 +97,19 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
     fclose(f);
  
     // Indica a quantidade de geocaches carregadas
-    printf("\n\033[1;33m%d unique geocaches loaded.\n\033[0m", *geocacheCount);
+    printf("\n%d unique geocaches loaded.\n", *geocacheCount);
 
     
 }
 // Mostra as geocaches que estão guardadas na memória (LOAD)
 void printGeocacheDetails(const Cache cache, int index) {
-    printf("\n\033[1;33mCache %d:\033[0m \n Code: %s, Name: %s, State: %s, Owner: %s, Latitude: %.6f, Longitude: %.6f, Kind: %s, Size: %s, Difficulty: %.1f, Terrain: %.1f, Status: %s, Hidden date: %s, Founds: %d, Not founds: %d, Favourites: %d, Altitude: %d\n",
-        index + 1,
+    // Dá print no header, se for a primeira "geocache"
+    if (index == 0) {
+        printf("| %-7s | %-50s | %-22s | %-22s | %-9s | %-10s | %-11s | %-10s | %-9s | %-8s | %-9s | %-9s | %-6s | %-9s | %-10s | %-8s |\n",
+            "Code", "Name", "State", "Owner", "Latitude", "Longitude", "Kind", "Size", "Difficulty", "Terrain", "Status", "Hidden Date", "Founds", "Not Founds", "Favourites", "Altitude");
+    }
+    // Print os detalhes do geocache
+    printf("\n| %-7s | %-50s | %-22s | %-22s | %-9f | %-10f | %-11s | %-10s | %-10f | %-7f | %-9s | %-11s | %-6d | %-10d | %-10d | %-8d |",
         cache.code,
         cache.name,
         cache.state,
@@ -125,7 +130,7 @@ void printGeocacheDetails(const Cache cache, int index) {
 
 void listGeocaches(const Cache geocaches[], int geocacheCount) {
     if (geocaches == NULL || geocacheCount == 0) {
-        printf("\n\033[1;33mNo geocaches to display.\n\033[0m");
+        printf("\nNo geocaches to display.\n");
         return;
     }
 
@@ -142,7 +147,7 @@ void listGeocaches(const Cache geocaches[], int geocacheCount) {
 // Função para listar geocaches com percentagem de aparecimento
 void foundPGeocaches(const Cache geocaches[], int geocacheCount) {
     if (geocaches == NULL || geocacheCount == 0) {
-        printf("\n\033[1;33mNo geocaches to display.\n\033[0m");
+        printf("\nNo geocaches to display.\n");
         return;
     }
 
