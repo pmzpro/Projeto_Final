@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #define MAX_CODES 2000
 #define MAX_LINE_LENGTH 1024
 Cache geocaches[MAX_CODES];
