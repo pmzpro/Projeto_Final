@@ -21,8 +21,8 @@ typedef struct {
 
 
 
-void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount);
-void clearGeocaches(int *geocacheCount);
-void listGeocaches(const Cache geocaches[], int geocacheCount);
-void loadFile(const char file[], Cache geocaches[], int *geocacheCount);
-void foundPGeocaches(const Cache geocaches[], int geocacheCount);
+void getGeocaches(const char file[], Cache geocaches[], int *cachesLoaded);
+void clearGeocaches(int *cachesLoaded);
+void listGeocaches(const Cache geocaches[], int cachesLoaded);
+void loadFile(const char file[], Cache geocaches[], int *cachesLoaded);
+void foundPGeocaches(const Cache geocaches[], int cachesLoaded);

@@ -6,28 +6,37 @@
 #define MAX_LINE_LENGTH 1024
 Cache geocaches[MAX_CODES];
 
-// varivel para verificar se o arquivo foi carregado
-int fileLoaded = 0;
 
 // Função (FoundP) para comparar duas caches e verificar se são iguais.
 int compareCaches(const Cache *cache1, const Cache *cache2) {
     return strcmp(cache1->code, cache2->code);
 }
 // Limpa as caches da memória.
-void clearGeocaches(int *geocacheCount) {
-    *geocacheCount = 0;
+void clearGeocaches(int *cachesLoaded) {
+    int verifyCache = *cachesLoaded;
+
+    if(verifyCache >= 1){ // Se existir cache vai limpar.
+    *cachesLoaded = 0;
     printf("\nGeocaches cleared.\n");
+    } else if (verifyCache == 0){ // Se não existir cache vai informar que não existe nada para limpar
+        printf("\nNo geocaches to clear.");
+    }
+    
+   
 }
  
-void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
+void getGeocaches(const char file[], Cache geocaches[], int *cachesLoaded) {
     
 
+     
     // Abre o arquivo no modo de leitura
     FILE *f = fopen(file, "r");
     if (!f) {
         printf("\nFile not found.\n");
         return;
     }
+
+
  
     // Variáveis para armazenar a linha lida, o delimitador e os tokens
     char line[MAX_LINE_LENGTH];
@@ -37,7 +46,7 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
     fgets(line, sizeof(line), f);
  
     // Loop para ler as linhas do arquivo e carregar as geocaches
-    while (fgets(line, sizeof(line), f) && *geocacheCount < MAX_CODES) {
+    while (fgets(line, sizeof(line), f) && *cachesLoaded < MAX_CODES) {
         // Inicializa uma nova estrutura Cache
         Cache gc = {0};
  
@@ -79,7 +88,7 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
  
         // Verifica se a geocache já existe no array antes de armazená-la
         int cacheExists = 0;
-        for (int i = 0; i < *geocacheCount; i++) {
+        for (int i = 0; i < *cachesLoaded; i++) {
             if (compareCaches(&geocaches[i], &gc) == 0) {
                 cacheExists = 1;
                 break;
@@ -88,8 +97,8 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
  
         // Se a geocache não existe, armazena-a no array
         if (!cacheExists) {
-            geocaches[*geocacheCount] = gc;
-            (*geocacheCount)++;
+            geocaches[*cachesLoaded] = gc;
+            (*cachesLoaded)++;
         }
     }
  
@@ -97,7 +106,7 @@ void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
     fclose(f);
  
     // Indica a quantidade de geocaches carregadas
-    printf("\n%d unique geocaches loaded.\n", *geocacheCount);
+    printf("\n%d unique geocaches loaded.\n", *cachesLoaded);
 
     
 }
@@ -128,8 +137,8 @@ void printGeocacheDetails(const Cache cache, int index) {
         cache.altitude);
 }
 
-void listGeocaches(const Cache geocaches[], int geocacheCount) {
-    if (geocaches == NULL || geocacheCount == 0) {
+void listGeocaches(const Cache geocaches[], int cachesLoaded) {
+    if (geocaches == NULL || cachesLoaded == 0) {
         printf("\nNo geocaches to display.\n");
         return;
     }
@@ -137,7 +146,7 @@ void listGeocaches(const Cache geocaches[], int geocacheCount) {
     printf("\nListing all geocaches:\n");
 
     // Imprime os detalhes de cada cache e a percentagem de aparecimento
-    for (int i = 0; i < geocacheCount; i++) {
+    for (int i = 0; i < cachesLoaded; i++) {
         printGeocacheDetails(geocaches[i], i);
 
         
@@ -145,8 +154,8 @@ void listGeocaches(const Cache geocaches[], int geocacheCount) {
 }
 
 // Função para listar geocaches com percentagem de aparecimento
-void foundPGeocaches(const Cache geocaches[], int geocacheCount) {
-    if (geocaches == NULL || geocacheCount == 0) {
+void foundPGeocaches(const Cache geocaches[], int cachesLoaded) {
+    if (geocaches == NULL || cachesLoaded == 0) {
         printf("\nNo geocaches to display.\n");
         return;
     }
@@ -156,9 +165,9 @@ void foundPGeocaches(const Cache geocaches[], int geocacheCount) {
     int occurrences[MAX_CODES] = {0};
 
     // Conta as ocorrências de cada cache
-    for (int i = 0; i < geocacheCount; i++) {
+    for (int i = 0; i < cachesLoaded; i++) {
         occurrences[i]++;
-        for (int j = i + 1; j < geocacheCount; j++) {
+        for (int j = i + 1; j < cachesLoaded; j++) {
             if (strcmp(geocaches[i].code, geocaches[j].code) == 0) {
                 occurrences[i]++;
                 occurrences[j]++;
@@ -167,7 +176,7 @@ void foundPGeocaches(const Cache geocaches[], int geocacheCount) {
     }
 
     // Imprime os detalhes de cada cache e a percentagem de aparecimento
-    for (int i = 0; i < geocacheCount; i++) {
+    for (int i = 0; i < cachesLoaded; i++) {
         printGeocacheDetails(geocaches[i], i);
 
         // Calcula a percentagem de aparecimento da cache
