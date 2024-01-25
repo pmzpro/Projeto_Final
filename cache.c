@@ -299,3 +299,228 @@ void center(const Cache geocaches[], int geocacheCount) {
     printf("Average Latitude: %.6f, Standard Deviation Latitude: %.6f\n", meanLatitude, stddevLatitude);
     printf("Average Longitude: %.6f, Standard Deviation Longitude: %.6f\n", meanLongitude, stddevLongitude);
 }
+
+// Função para mostrar a contagem de caches para cada distrito e status
+void STATEC(const Cache geocaches[], int geocacheCount) {
+    if (geocaches == NULL || geocacheCount == 0) {
+        printf("\n\033[1;33mNo geocaches loaded.\n\033[0m");
+        return;
+    }
+
+    // Definir estrutura para armazenar contagens por distrito e status
+    typedef struct {
+        char state[255];
+        int availableCount;
+        int inactiveCount;
+    } StateCount;
+
+    // Inicializar array para armazenar contagens
+    StateCount stateCounts[MAX_CODES];
+    int stateCount = 0;
+
+    // Inicializar contagens para cada distrito
+    for (int i = 0; i < geocacheCount; i++) {
+        int stateIndex = -1;
+
+        // Verificar se o distrito já está na lista de contagens (ignorar maiúsculas e minúsculas)
+        for (int j = 0; j < stateCount; j++) {
+            if (strcasecmp(stateCounts[j].state, geocaches[i].state) == 0) {
+                stateIndex = j;
+                break;
+            }
+        }
+
+        // Se o distrito não está na lista, adicioná-lo
+        if (stateIndex == -1) {
+            strcpy(stateCounts[stateCount].state, geocaches[i].state);
+            stateCounts[stateCount].availableCount = 0;
+            stateCounts[stateCount].inactiveCount = 0;
+            stateIndex = stateCount;
+            stateCount++;
+        }
+
+        // Incrementar contagem com base no status da cache (ignorar maiúsculas e minúsculas)
+        if (strcasecmp(geocaches[i].status, "Available") == 0) {
+            stateCounts[stateIndex].availableCount++;
+        } else if (strcasecmp(geocaches[i].status, "Inactive") == 0) {
+            stateCounts[stateIndex].inactiveCount++;
+        }
+    }
+
+    // Exibir contagens por distrito e status
+    printf("\n\033[1;33mCache Counts by State and Status:\n\033[0m");
+    for (int i = 0; i < stateCount; i++) {
+        printf("\n\033[1;33mState: %s\n\033[0m", stateCounts[i].state);
+        printf("Available: %d caches\n", stateCounts[i].availableCount);
+        printf("Inactive: %d caches\n", stateCounts[i].inactiveCount);
+    }
+}
+
+// Função para salvar as informações de caches em um arquivo CSV
+void SAVE(const Cache geocaches[], int geocacheCount) {
+    if (geocaches == NULL || geocacheCount == 0) {
+        printf("\n\033[1;33mNo geocaches loaded.\n\033[0m");
+        return;
+    }
+
+    char fileName[256];
+
+    // Solicitar ao usuário o nome do arquivo
+    printf("\n\033[1;33mEnter the file name to save (including .csv extension): \033[0m");
+    scanf("%255s", fileName);
+
+    // Verificar se o arquivo já existe
+    FILE *checkFile = fopen(fileName, "r");
+    if (checkFile != NULL) {
+        fclose(checkFile);
+        printf("\n\033[1;31mFile with the same name already exists. Save aborted.\n\033[0m");
+        return;
+    }
+
+    // Abrir o arquivo para escrita
+    FILE *file = fopen(fileName, "w");
+    if (!file) {
+        printf("\n\033[1;31mError opening file for writing.\n\033[0m");
+        return;
+    }
+
+    // Escrever cabeçalho no arquivo CSV
+    fprintf(file, "Code,Name,State,Owner,Latitude,Longitude,Kind,Size,Difficulty,Terrain,Status,HiddenDate,Founds,NotFounds,Favourites,Altitude\n");
+
+    // Escrever informações de cada geocache no arquivo CSV
+    for (int i = 0; i < geocacheCount; i++) {
+        fprintf(file, "%s,%s,%s,%s,%.6f,%.6f,%s,%s,%.1f,%.1f,%s,%s,%d,%d,%d,%d\n",
+                geocaches[i].code,
+                geocaches[i].name,
+                geocaches[i].state,
+                geocaches[i].owner,
+                geocaches[i].latitude,
+                geocaches[i].longitude,
+                geocaches[i].kind,
+                geocaches[i].size,
+                geocaches[i].difficulty,
+                geocaches[i].terrain,
+                geocaches[i].status,
+                geocaches[i].hidden_date,
+                geocaches[i].founds,
+                geocaches[i].not_found,
+                geocaches[i].favourites,
+                geocaches[i].altitude);
+    }
+
+    // Fechar o arquivo
+    fclose(file);
+
+    printf("\n\033[1;32mData saved successfully.\n\033[0m");
+}
+
+// Função para calcular a matriz 81
+void M81(const Cache geocaches[], int geocacheCount) {
+    if (geocaches == NULL || geocacheCount == 0) {
+        printf("\n\033[1;33mNo geocaches loaded.\n\033[0m");
+        return;
+    }
+
+    // Definir uma estrutura para armazenar contagens por terreno/dificuldade
+    typedef struct {
+        double difficulty;
+        double terrain;
+        int count;
+    } DifficultyTerrainCount;
+
+    // Inicializar uma matriz 9x9 para armazenar contagens
+    DifficultyTerrainCount matrix81[9][9];
+
+    // Inicializar a matriz com contagens zeradas
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            matrix81[i][j].difficulty = i + 1;  // Dificuldade varia de 1 a 9
+            matrix81[i][j].terrain = j + 1;    // Terreno varia de 1 a 9
+            matrix81[i][j].count = 0;
+        }
+    }
+
+    // Preencher a matriz com contagens reais
+    for (int i = 0; i < geocacheCount; i++) {
+        int difficultyIndex = (int)geocaches[i].difficulty - 1;
+        int terrainIndex = (int)geocaches[i].terrain - 1;
+
+        // Incrementar a contagem para a combinação de terreno/dificuldade correspondente
+        matrix81[difficultyIndex][terrainIndex].count++;
+    }
+
+    // Exibir a matriz 81
+    printf("\n\033[1;33mMatrix 81 (Difficulty x Terrain):\n\033[0m");
+    printf("\n\033[1;33m    Terrain\\Difficulty 1   2   3   4   5   6   7   8   9\n\033[0m");
+    printf("\033[1;33m--------------------------------------------------------\n\033[0m");
+
+    for (int i = 0; i < 9; i++) {
+        printf("\033[1;33m%12.1f |", matrix81[i][0].difficulty);
+
+        for (int j = 0; j < 9; j++) {
+            printf(" %2d ", matrix81[i][j].count);
+        }
+
+        printf("\n");
+    }
+}
+
+// Função para comparar caches por altitude (decrescente)
+int compareByAltitude(const void *a, const void *b) {
+    return ((Cache *)b)->altitude - ((Cache *)a)->altitude;
+}
+
+// Função para comparar caches por state (de A-Z, desempate por founds decrescente)
+int compareByState(const void *a, const void *b) {
+    int stateCompare = strcmp(((Cache *)a)->state, ((Cache *)b)->state);
+    if (stateCompare != 0) {
+        return stateCompare;
+    }
+    // Em caso de empate no estado, desempate por founds decrescente
+    return ((Cache *)b)->founds - ((Cache *)a)->founds;
+}
+
+// Função para comparar caches por hidden_date (mais recente para mais antiga)
+int compareByHiddenDate(const void *a, const void *b) {
+    return strcmp(((Cache *)b)->hidden_date, ((Cache *)a)->hidden_date);
+}
+
+// Função para ordenar e mostrar a listagem de caches
+void SORT(Cache geocaches[], int geocacheCount) {
+    if (geocaches == NULL || geocacheCount == 0) {
+        printf("\n\033[1;33mNo geocaches loaded.\n\033[0m");
+        return;
+    }
+
+    int sortOption;
+
+    // Solicitar ao usuário a forma de ordenação
+    printf("\n\033[1;33mChoose sorting option:\n");
+    printf("1 - By altitude (descending)\n");
+    printf("2 - By state (A-Z, tiebreaker by founds descending)\n");
+    printf("3 - By hidden_date (most recent to oldest)\n");
+    printf("Enter your choice (1-3): \033[0m");
+    scanf("%d", &sortOption);
+
+    // Realizar a ordenação com base na escolha do usuário
+    switch (sortOption) {
+        case 1:
+            qsort(geocaches, geocacheCount, sizeof(Cache), compareByAltitude);
+            break;
+        case 2:
+            qsort(geocaches, geocacheCount, sizeof(Cache), compareByState);
+            break;
+        case 3:
+            qsort(geocaches, geocacheCount, sizeof(Cache), compareByHiddenDate);
+            break;
+        default:
+            printf("\n\033[1;33mInvalid sorting option.\n\033[0m");
+            return;
+    }
+
+    // Exibir a listagem ordenada
+    printf("\n\033[1;33mSorted Geocache Listing:\n\033[0m");
+    for (int i = 0; i < geocacheCount; i++) {
+        printGeocacheDetails(geocaches[i], i);
+    }
+}

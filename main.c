@@ -19,7 +19,7 @@ int main() {
         printf("\033[1;32m\n******************************\033[0m");
         printf("\033[1;32m\n********* GEOCACHING *********\033[0m\n");
         printf("\033[1;32m******************************\033[0m\n");
-        printf("\033[1;37m\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n5 - SEARCH\n6 - EDIT\n7 - Center\n0 - QUIT\n\n\033[0m\033[1;32mChoose an option: \033[0m");
+        printf("\033[1;37m\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n5 - SEARCH\n6 - EDIT\n7 - CENTER\n8 - STATEC\n9 - SAVE\n10 - M81\n11 - SORT\n12 - AGE\n0 - QUIT\n\n\033[0m\033[1;32mChoose an option: \033[0m");
         scanf("%d", &menuOption);
         getchar(); // Limpa o buffer do teclado
 
@@ -59,6 +59,19 @@ int main() {
             case 7:
             // Função CENTER - calcula média e desvio padrão das latitudes e longitudes
                 center(geocaches, geocacheCount);
+                break;
+            case 8:
+                // Chamar a função AGE
+                STATEC(geocaches,geocacheCount);
+                break;
+            case 9:
+                SAVE(geocaches, geocacheCount);
+                break;
+            case 10:
+                M81(geocaches, geocacheCount);
+                break;
+            case 11:
+                SORT(geocaches, geocacheCount);
                 break;
             case 0:
             //Função QUIT - Termina o programa.
