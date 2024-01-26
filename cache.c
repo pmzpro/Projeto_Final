@@ -12,14 +12,14 @@ int compareCaches(const Cache *cache1, const Cache *cache2) {
     return strcmp(cache1->code, cache2->code);
 }
 // Limpa as caches da memória.
-void clearGeocaches(int *cachesLoaded) {
+void clearCaches(int *cachesLoaded) {
     int verifyCache = *cachesLoaded;
 
     if(verifyCache >= 1){ // Se existir cache vai limpar.
     *cachesLoaded = 0;
     printf("\nGeocaches cleared.\n");
     } else if (verifyCache == 0){ // Se não existir cache vai informar que não existe nada para limpar
-        printf("\nNo geocaches to clear.");
+        printf("\nNo geocaches to clear.\n");
     }
     
    
@@ -117,7 +117,7 @@ void printGeocacheDetails(const Cache cache, int index) {
         printf("| %-7s | %-50s | %-22s | %-22s | %-9s | %-10s | %-11s | %-10s | %-9s | %-8s | %-9s | %-9s | %-6s | %-9s | %-10s | %-8s |\n",
             "Code", "Name", "State", "Owner", "Latitude", "Longitude", "Kind", "Size", "Difficulty", "Terrain", "Status", "Hidden Date", "Founds", "Not Founds", "Favourites", "Altitude");
     }
-    // Print os detalhes do geocache
+    // Printa os detalhes do geocache
     printf("\n| %-7s | %-50s | %-22s | %-22s | %-9f | %-10f | %-11s | %-10s | %-10f | %-7f | %-9s | %-11s | %-6d | %-10d | %-10d | %-8d |",
         cache.code,
         cache.name,

@@ -22,7 +22,7 @@ typedef struct {
 
 
 void getGeocaches(const char file[], Cache geocaches[], int *cachesLoaded);
-void clearGeocaches(int *cachesLoaded);
+void clearCaches(int *cachesLoaded);
 void listGeocaches(const Cache geocaches[], int cachesLoaded);
 void loadFile(const char file[], Cache geocaches[], int *cachesLoaded);
 void foundPGeocaches(const Cache geocaches[], int cachesLoaded);

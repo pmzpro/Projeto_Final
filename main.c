@@ -2,57 +2,56 @@
 #include <stdlib.h>
 #include <string.h>
 #include "cache.h"
+#include "input.h"
+#include <ctype.h>
 
-
+void printMenu() {
+    printf("\n******************************");
+    printf("\n********* GEOCACHING *********\n");
+    printf("******************************\n");
+    printf("\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n0 - QUIT\n\nChoose an option: ");
+}
 
 int main() {
-    // Variaveis 
+    // Variables
     Cache geocaches[MAX_CODES];
     int cachesLoaded = 0;
     int menuOption;
     char file[256];
 
-
     do {
-        // Menu Geocache
-        printf("\n******************************");
-        printf("\n********* GEOCACHING *********\n");
-        printf("******************************\n");
-        printf("\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n0 - QUIT\n\nChoose an option: ");
+        printMenu(); // Call the function to print the menu
         scanf("%d", &menuOption);
-        getchar(); // Limpa o buffer do teclado
+        getchar();
 
         switch(menuOption) {
-            case 1: //Função LOAD - lê o ficheiro e guarda os dados na memória.
-
+            case 1: // LOAD function
                 if (cachesLoaded > 0) {
-                printf("\nCache data exists. Please clear it first.\n");
+                    printf("\nCache data exists. Please clear it first.\n");
                  } else {
-                printf("\nEnter filename: ");
-                scanf("%255s", file);
-                getGeocaches(file, geocaches, &cachesLoaded);
+                    printf("\nEnter filename: ");
+                    scanf("%255s", file);
+                    getGeocaches(file, geocaches, &cachesLoaded);
                  } 
                 break;
-            case 2://Função CLEAR - limpa os dados da memória.
-                clearGeocaches(&cachesLoaded);
-                // fileLoaded = 0;
+            case 2: // CLEAR function
+                clearCaches(&cachesLoaded);
                 break;
-            case 3://Função LIST - mostra os dados que estão carregados na memória.
+            case 3: // LIST function
                 listGeocaches(geocaches, cachesLoaded);
                 break;
-            case 4://Função FOUNP - mostra a percentagem de aparecimento da cache.
+            case 4: // FOUNDP function
                 foundPGeocaches(geocaches, cachesLoaded);
                 break;
-            case 0://Função QUIT - Termina o programa.
+            case 0: // QUIT function
                 printf("\nExit Success!\n");
                 printf("\n");
                 return EXIT_SUCCESS;
-                break;
             default:
-                printf("\nInvalid option.\n");
+                printf("\nInvalid option. Please try again with a valid command.\n");
         }
-    } while (menuOption != 0); // O menu é apresentando até ser selecionada a opção 0 - Quit.
-
+        
+    } while (menuOption != 0); // The menu is displayed until the QUIT option (0) is selected.
     
     return EXIT_SUCCESS;
 }
