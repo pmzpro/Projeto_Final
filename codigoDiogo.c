@@ -7,8 +7,6 @@
 #define MAX_LINE_LENGTH 1024
 Cache geocaches[MAX_CODES];
 
-
-
 // Função (FoundP) para comparar duas caches e verificar se são iguais.
 int compareCaches(const Cache *cache1, const Cache *cache2) {
     return strcmp(cache1->code, cache2->code);
@@ -28,14 +26,14 @@ void clearCaches(int *cachesLoaded) {
 }
  
 void getGeocaches(const char file[], Cache geocaches[], int *cachesLoaded) {
-    
+
     // Abre o arquivo no modo de leitura
     FILE *f = fopen(file, "r");
     if (!f) {
-        printf("\nFile not found.\n");
+        printf("\n\033[1;31mFile not found.\n\033[0m");
         return;
     }
-
+ 
     // Variáveis para armazenar a linha lida, o delimitador e os tokens
     char line[MAX_LINE_LENGTH];
     const char delimiter[] = ";";
@@ -104,20 +102,14 @@ void getGeocaches(const char file[], Cache geocaches[], int *cachesLoaded) {
     fclose(f);
  
     // Indica a quantidade de geocaches carregadas
-    printf("\n%d unique geocaches loaded.\n", *cachesLoaded);
+    printf("\n\033[1;33m%d unique geocaches loaded.\n\033[0m", *cachesLoaded);
 
     
 }
-
 // Mostra as geocaches que estão guardadas na memória (LOAD)
 void printGeocacheDetails(const Cache cache, int index) {
-    // Dá print no header, se for a primeira "geocache"
-    if (index == 0) {
-        printf("| %-7s | %-50s | %-22s | %-22s | %-9s | %-10s | %-11s | %-10s | %-9s | %-8s | %-9s | %-9s | %-6s | %-9s | %-10s | %-8s |\n",
-            "Code", "Name", "State", "Owner", "Latitude", "Longitude", "Kind", "Size", "Difficulty", "Terrain", "Status", "Hidden Date", "Founds", "Not Founds", "Favourites", "Altitude");
-    }
-    // Printa os detalhes do geocache
-    printf("\n| %-7s | %-50s | %-22s | %-22s | %-9f | %-10f | %-11s | %-10s | %-10f | %-7f | %-9s | %-11s | %-6d | %-10d | %-10d | %-8d |",
+    printf("\n\033[1;33mCache %d:\033[0m \n Code: %s, Name: %s, State: %s, Owner: %s, Latitude: %.6f, Longitude: %.6f, Kind: %s, Size: %s, Difficulty: %.1f, Terrain: %.1f, Status: %s, Hidden date: %s, Founds: %d, Not founds: %d, Favourites: %d, Altitude: %d\n",
+        index + 1,
         cache.code,
         cache.name,
         cache.state,
@@ -138,7 +130,7 @@ void printGeocacheDetails(const Cache cache, int index) {
 
 void listGeocaches(const Cache geocaches[], int cachesLoaded) {
     if (geocaches == NULL || cachesLoaded == 0) {
-        printf("\nNo geocaches to display.\n");
+        printf("\n\033[1;33mNo geocaches to display.\n\033[0m");
         return;
     }
 
@@ -147,6 +139,8 @@ void listGeocaches(const Cache geocaches[], int cachesLoaded) {
     // Imprime os detalhes de cada cache e a percentagem de aparecimento
     for (int i = 0; i < cachesLoaded; i++) {
         printGeocacheDetails(geocaches[i], i);
+
+        
     }
 }
 
@@ -155,15 +149,14 @@ void foundPGeocaches(const Cache geocaches[], int cachesLoaded) {
     float percentage;
 
     if (geocaches == NULL || cachesLoaded == 0) {
-        printf("\nNo geocaches loaded.\n");
+        printf("\n\033[1;31mNo geocaches loaded.\n\033[0m");
         return;
     }
 
     for (int i = 0; i < cachesLoaded; i++) {
         percentage = (float)geocaches[i].founds / (geocaches[i].not_found + geocaches[i].founds) * 100;;
 
-        printf("\nCache %d: \n Percentage: %.2f%%\n Code: %s, Name: %s, State: %s, Owner: %s, Latitude: %.6f, Longitude: %.6f, Kind: %s, Size: %s, Difficulty: %.1f, Terrain: %.1f, Status: %s, Hidden date: %s, Founds: %d, Not founds: %d, Favourites: %d, Altitude: %d\n",
-        i + 1,
+        printf("\n\033[1;33mCache %d:\033[0m \n Percentage: %.2f%%\n Code: %s, Name: %s, State: %s, Owner: %s, Latitude: %.6f, Longitude: %.6f, Kind: %s, Size: %s, Difficulty: %.1f, Terrain: %.1f, Status: %s, Hidden date: %s, Founds: %d, Not founds: %d, Favourites: %d, Altitude: %d\n",
         percentage,
         geocaches[i].code,
         geocaches[i].name,
@@ -184,12 +177,10 @@ void foundPGeocaches(const Cache geocaches[], int cachesLoaded) {
     }
 }
 
-// FUNÇÕES DA SEGUNDA FASE COMEÇAM AQUI
-
 // Função para procurar uma geocache pelo código
 void searchGeocache(const Cache geocaches[], int cachesLoaded) {
     char searchCode[255];
-    printf("\nEnter cache code to search: ");
+    printf("\n\033[1;33mEnter cache code to search: \033[0m");
     scanf("%255s", searchCode);
     getchar(); // Limpa o buffer do teclado
 
@@ -206,14 +197,14 @@ void searchGeocache(const Cache geocaches[], int cachesLoaded) {
     if (cacheIndex != -1) {
         printGeocacheDetails(geocaches[cacheIndex], cacheIndex);
     } else {
-        printf("\n<Cache not found>\n");
+        printf("\n\033[1;33m<Cache not found>\n\033[0m");
     }
 }
 
 // Função para editar informações de uma geocache
 void editGeocache(Cache *geocaches, int cachesLoaded) {
     char searchCode[255];  // Alterado para 6 para incluir o caractere nulo '\0'
-    printf("\nEnter cache code to edit: ");
+    printf("\n\033[1;33mEnter cache code to edit: \033[0m");
     scanf("%255s", searchCode);
     getchar(); // Limpa o buffer do teclado
 
@@ -229,55 +220,55 @@ void editGeocache(Cache *geocaches, int cachesLoaded) {
     // Exibe os detalhes da geocache se encontrada, caso contrário, exibe a mensagem de não encontrada
     if (cacheIndex != -1) {
         // Apresenta os detalhes da geocache antes da edição
-        printf("\n\033Cache details before edit:");
+        printf("\n\033[1;33mCache details before edit:\033[0m");
         printGeocacheDetails(geocaches[cacheIndex], cacheIndex);
 
         // Opções de edição
-        printf("\nSelect information to edit:");
+        printf("\n\033[1;37mSelect information to edit:\033[0m");
         printf("\n1 - Owner\n2 - Status\n3 - Hidden Date\n4 - Altitude\n0 - Cancel\n");
 
         int editOption;
-        printf("\nChoose an option: ");
+        printf("\n\033[1;32mChoose an option: \033[0m");
         scanf("%d", &editOption);
         getchar(); // Limpa o buffer do teclado
 
         switch (editOption) {
             case 1:
-                printf("\nEnter new owner: ");
+                printf("\n\033[1;33mEnter new owner: \033[0m");
                 scanf("%255s", geocaches[cacheIndex].owner);
                 break;
             case 2:
-                printf("\nEnter new status: ");
+                printf("\n\033[1;33mEnter new status: \033[0m");
                 scanf("%255s", geocaches[cacheIndex].status);
                 break;
             case 3:
-                printf("\nEnter new hidden date: ");
+                printf("\n\033[1;33mEnter new hidden date: \033[0m");
                 scanf("%255s", geocaches[cacheIndex].hidden_date);
                 break;
             case 4:
-                printf("\nEnter new altitude: ");
+                printf("\n\033[1;33mEnter new altitude: \033[0m");
                 scanf("%d", &geocaches[cacheIndex].altitude);
                 break;
             case 0:
-                printf("\nEdit canceled.\n");
+                printf("\n\033[1;33mEdit canceled.\n\033[0m");
                 break;
             default:
-                printf("\nInvalid option.\n");
+                printf("\n\033[1;33mInvalid option.\n\033[0m");
                 break;
         }
 
         // Apresenta os detalhes da geocache após a edição
-        printf("\nCache details after edit:");
+        printf("\n\033[1;33mCache details after edit:\033[0m");
         printGeocacheDetails(geocaches[cacheIndex], cacheIndex);
     } else {
-        printf("\n<Cache not found>\n");
+        printf("\n\033[1;33m<Cache not found>\n\033[0m");
     }
 }
 
 // Função para calcular a média e o desvio padrão das latitudes e longitudes
 void center(const Cache geocaches[], int cachesLoaded) {
     if (geocaches == NULL || cachesLoaded == 0) {
-        printf("\nNo geocaches to calculate statistics.\n");
+        printf("\n\033[1;33mNo geocaches to calculate statistics.\n\033[0m");
         return;
     }
 
@@ -308,7 +299,7 @@ void center(const Cache geocaches[], int cachesLoaded) {
     double stddevLongitude = sqrt(sumLongSquared / cachesLoaded);
 
     // Exibir as estatísticas
-    printf("\nStatistics for Geocaches:\n");
+    printf("\n\033[1;33mStatistics for Geocaches:\n\033[0m");
     printf("Average Latitude: %.6f, Standard Deviation Latitude: %.6f\n", meanLatitude, stddevLatitude);
     printf("Average Longitude: %.6f, Standard Deviation Longitude: %.6f\n", meanLongitude, stddevLongitude);
 }
@@ -316,7 +307,7 @@ void center(const Cache geocaches[], int cachesLoaded) {
 // Função para mostrar a contagem de caches para cada distrito e status
 void STATEC(const Cache geocaches[], int cachesLoaded) {
     if (geocaches == NULL || cachesLoaded == 0) {
-        printf("\nNo geocaches loaded.\n");
+        printf("\n\033[1;33mNo geocaches loaded.\n\033[0m");
         return;
     }
 
@@ -361,9 +352,9 @@ void STATEC(const Cache geocaches[], int cachesLoaded) {
     }
 
     // Exibir contagens por distrito e status
-    printf("\nCache Counts by State and Status:\n");
+    printf("\n\033[1;33mCache Counts by State and Status:\n\033[0m");
     for (int i = 0; i < stateCount; i++) {
-        printf("\nState: %s\n", stateCounts[i].state);
+        printf("\n\033[1;33mState: %s\n\033[0m", stateCounts[i].state);
         printf("Available: %d caches\n", stateCounts[i].availableCount);
         printf("Inactive: %d caches\n", stateCounts[i].inactiveCount);
     }
@@ -372,28 +363,28 @@ void STATEC(const Cache geocaches[], int cachesLoaded) {
 // Função para salvar as informações de caches em um arquivo CSV
 void SAVE(const Cache geocaches[], int cachesLoaded) {
     if (geocaches == NULL || cachesLoaded == 0) {
-        printf("\nNo geocaches loaded.\n");
+        printf("\n\033[1;33mNo geocaches loaded.\n\033[0m");
         return;
     }
 
     char fileName[256];
 
     // Solicitar ao usuário o nome do arquivo
-    printf("\nEnter the file name to save (including .csv extension): ");
+    printf("\n\033[1;33mEnter the file name to save (including .csv extension): \033[0m");
     scanf("%255s", fileName);
 
     // Verificar se o arquivo já existe
     FILE *checkFile = fopen(fileName, "r");
     if (checkFile != NULL) {
         fclose(checkFile);
-        printf("\n\033[1;31mFile with the same name already exists. Save aborted.\n");
+        printf("\n\033[1;31mFile with the same name already exists. Save aborted.\n\033[0m");
         return;
     }
 
     // Abrir o arquivo para escrita
     FILE *file = fopen(fileName, "w");
     if (!file) {
-        printf("\n\033[1;31mError opening file for writing.\n");
+        printf("\n\033[1;31mError opening file for writing.\n\033[0m");
         return;
     }
 
@@ -424,13 +415,13 @@ void SAVE(const Cache geocaches[], int cachesLoaded) {
     // Fechar o arquivo
     fclose(file);
 
-    printf("\nData saved successfully.\n");
+    printf("\n\033[1;32mData saved successfully.\n\033[0m");
 }
 
 // Função para exibir a tabela M81 com cabeçalhos para linhas e colunas
 void M81(const Cache geocaches[], int cachesLoaded) {
     if (geocaches == NULL || cachesLoaded == 0) {
-        printf("\nNo geocaches loaded.\n");
+        printf("\n\033[1;33mNo geocaches loaded.\n\033[0m");
         return;
     }
 
@@ -445,15 +436,15 @@ void M81(const Cache geocaches[], int cachesLoaded) {
     }
 
     // Exibir a tabela M81 com cabeçalhos
-    printf("\nM81 Table (Difficulty x Terrain):\n");
+    printf("\n\033[1;33mM81 Table (Difficulty x Terrain):\n\033[0m");
 
     // Exibir cabeçalhos de coluna
-    printf("    | 1.0  1.5  2.0  2.5  3.0  3.5  4.0  4.5  5.0\n");
-    printf("---------------------------------------------\n");
+    printf("\033[1;33m    | 1.0  1.5  2.0  2.5  3.0  3.5  4.0  4.5  5.0\n\033[0m");
+    printf("\033[1;33m---------------------------------------------\n\033[0m");
 
     // Exibir linhas com cabeçalhos
     for (int i = 0; i < 9; i++) {
-        printf("%2.1f |", 0.5 * (i + 2)); // Exibir cabeçalho da linha
+        printf("\033[1;33m%2.1f |", 0.5 * (i + 2)); // Exibir cabeçalho da linha
 
         // Exibir contagens para cada coluna
         for (int j = 0; j < 9; j++) {
@@ -487,18 +478,18 @@ int compareByHiddenDate(const void *a, const void *b) {
 // Função para ordenar e mostrar a listagem de caches
 void SORT(Cache geocaches[], int cachesLoaded) {
     if (geocaches == NULL || cachesLoaded == 0) {
-        printf("\nNo geocaches loaded.\n");
+        printf("\n\033[1;33mNo geocaches loaded.\n\033[0m");
         return;
     }
 
     int sortOption;
 
     // Solicitar ao usuário a forma de ordenação
-    printf("\nChoose sorting option:\n");
+    printf("\n\033[1;33mChoose sorting option:\n");
     printf("1 - By altitude (descending)\n");
     printf("2 - By state (A-Z, tiebreaker by founds descending)\n");
     printf("3 - By hidden_date (most recent to oldest)\n");
-    printf("Enter your choice (1-3): ");
+    printf("Enter your choice (1-3): \033[0m");
     scanf("%d", &sortOption);
 
     // Realizar a ordenação com base na escolha do usuário
@@ -513,12 +504,12 @@ void SORT(Cache geocaches[], int cachesLoaded) {
             qsort(geocaches, cachesLoaded, sizeof(Cache), compareByHiddenDate);
             break;
         default:
-            printf("\nInvalid sorting option.\n");
+            printf("\n\033[1;33mInvalid sorting option.\n\033[0m");
             return;
     }
 
     // Exibir a listagem ordenada
-    printf("\nSorted Geocache Listing:\n");
+    printf("\n\033[1;33mSorted Geocache Listing:\n\033[0m");
     for (int i = 0; i < cachesLoaded; i++) {
         printGeocacheDetails(geocaches[i], i);
     }

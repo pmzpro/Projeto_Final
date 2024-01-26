@@ -9,7 +9,7 @@ void printMenu() {
     printf("\n******************************");
     printf("\n********* GEOCACHING *********\n");
     printf("******************************\n");
-    printf("\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n0 - QUIT\n\nChoose an option: ");
+    printf("\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n5 - SEARCH\n6 - EDIT\n7 - CENTER\n8 - STATEC\n9 - SAVE\n10 - M81\n11 - SORT\n0 - QUIT\n\nChoose an option: ");
 }
 
 int main() {
@@ -42,6 +42,31 @@ int main() {
                 break;
             case 4: // FOUNDP function
                 foundPGeocaches(geocaches, cachesLoaded);
+                break;
+            case 5:
+            //Função SEARCH - procura uma geocache pelo código
+                searchGeocache(geocaches, cachesLoaded);
+                break;
+            case 6:
+            // Função EDIT - edita informações de uma geocache
+                editGeocache(geocaches, cachesLoaded);
+                break;
+            case 7:
+            // Função CENTER - calcula média e desvio padrão das latitudes e longitudes
+                center(geocaches, cachesLoaded);
+                break;
+            case 8:
+                // Chamar a função AGE
+                STATEC(geocaches,cachesLoaded);
+                break;
+            case 9:
+                SAVE(geocaches, cachesLoaded);
+                break;
+            case 10:
+                M81(geocaches, cachesLoaded);
+                break;
+            case 11:
+                SORT(geocaches, cachesLoaded);
                 break;
             case 0: // QUIT function
                 printf("\nExit Success!\n");
