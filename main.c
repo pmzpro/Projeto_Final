@@ -19,7 +19,7 @@ int main() {
         printf("\033[1;32m\n******************************\033[0m");
         printf("\033[1;32m\n********* GEOCACHING *********\033[0m\n");
         printf("\033[1;32m******************************\033[0m\n");
-        printf("\033[1;37m\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n5 - SEARCH\n6 - EDIT\n7 - CENTER\n8 - STATEC\n9 - SAVE\n10 - M81\n11 - SORT\n12 - AGE\n0 - QUIT\n\n\033[0m\033[1;32mChoose an option: \033[0m");
+        printf("\033[1;37m\n1 - LOAD\n2 - CLEAR\n3 - LIST\n4 - FOUNDP\n5 - SEARCH\n6 - EDIT\n7 - CENTER\n8 - STATEC\n9 - SAVE\n10 - M81\n11 - SORT\n0 - QUIT\n\n\033[0m\033[1;32mChoose an option: \033[0m");
         scanf("%d", &menuOption);
         getchar(); // Limpa o buffer do teclado
 

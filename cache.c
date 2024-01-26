@@ -341,9 +341,9 @@ void STATEC(const Cache geocaches[], int geocacheCount) {
         }
 
         // Incrementar contagem com base no status da cache (ignorar maiúsculas e minúsculas)
-        if (strcasecmp(geocaches[i].status, "Available") == 0) {
+        if (strcasecmp(geocaches[i].status, "AVAILABLE") == 0) {
             stateCounts[stateIndex].availableCount++;
-        } else if (strcasecmp(geocaches[i].status, "Inactive") == 0) {
+        } else if (strcasecmp(geocaches[i].status, "DISABLED") == 0) {
             stateCounts[stateIndex].inactiveCount++;
         }
     }
@@ -415,51 +415,37 @@ void SAVE(const Cache geocaches[], int geocacheCount) {
     printf("\n\033[1;32mData saved successfully.\n\033[0m");
 }
 
-// Função para calcular a matriz 81
+// Função para exibir a tabela M81 com cabeçalhos para linhas e colunas
 void M81(const Cache geocaches[], int geocacheCount) {
     if (geocaches == NULL || geocacheCount == 0) {
         printf("\n\033[1;33mNo geocaches loaded.\n\033[0m");
         return;
     }
 
-    // Definir uma estrutura para armazenar contagens por terreno/dificuldade
-    typedef struct {
-        double difficulty;
-        double terrain;
-        int count;
-    } DifficultyTerrainCount;
+    // Initialize a 9x9 matrix to store counts for each difficulty/terrain combination
+    int matrix81[9][9] = {0};
 
-    // Inicializar uma matriz 9x9 para armazenar contagens
-    DifficultyTerrainCount matrix81[9][9];
-
-    // Inicializar a matriz com contagens zeradas
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            matrix81[i][j].difficulty = i + 1;  // Dificuldade varia de 1 a 9
-            matrix81[i][j].terrain = j + 1;    // Terreno varia de 1 a 9
-            matrix81[i][j].count = 0;
-        }
-    }
-
-    // Preencher a matriz com contagens reais
+    // Fill the matrix with counts
     for (int i = 0; i < geocacheCount; i++) {
-        int difficultyIndex = (int)geocaches[i].difficulty - 1;
-        int terrainIndex = (int)geocaches[i].terrain - 1;
-
-        // Incrementar a contagem para a combinação de terreno/dificuldade correspondente
-        matrix81[difficultyIndex][terrainIndex].count++;
+        int difficultyIndex = (geocaches[i].difficulty - 1) * 2;
+        int terrainIndex = (geocaches[i].terrain - 1) * 2;
+        matrix81[difficultyIndex][terrainIndex]++;
     }
 
-    // Exibir a matriz 81
-    printf("\n\033[1;33mMatrix 81 (Difficulty x Terrain):\n\033[0m");
-    printf("\n\033[1;33m    Terrain\\Difficulty 1   2   3   4   5   6   7   8   9\n\033[0m");
-    printf("\033[1;33m--------------------------------------------------------\n\033[0m");
+    // Exibir a tabela M81 com cabeçalhos
+    printf("\n\033[1;33mM81 Table (Difficulty x Terrain):\n\033[0m");
 
+    // Exibir cabeçalhos de coluna
+    printf("\033[1;33m    | 1.0  1.5  2.0  2.5  3.0  3.5  4.0  4.5  5.0\n\033[0m");
+    printf("\033[1;33m---------------------------------------------\n\033[0m");
+
+    // Exibir linhas com cabeçalhos
     for (int i = 0; i < 9; i++) {
-        printf("\033[1;33m%12.1f |", matrix81[i][0].difficulty);
+        printf("\033[1;33m%2.1f |", 0.5 * (i + 2)); // Exibir cabeçalho da linha
 
+        // Exibir contagens para cada coluna
         for (int j = 0; j < 9; j++) {
-            printf(" %2d ", matrix81[i][j].count);
+            printf(" %3d ", matrix81[i][j]);
         }
 
         printf("\n");
