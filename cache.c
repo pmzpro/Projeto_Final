@@ -21,7 +21,6 @@ void clearGeocaches(int *geocacheCount) {
 }
  
 void getGeocaches(const char file[], Cache geocaches[], int *geocacheCount) {
-    
 
     // Abre o arquivo no modo de leitura
     FILE *f = fopen(file, "r");
