@@ -7,15 +7,12 @@
 #define MAX_LINE_LENGTH 1024
 Cache geocaches[MAX_CODES];
 
-// varivel para verificar se o arquivo foi carregado
-int fileLoaded = 0;
-
 // Função (FoundP) para comparar duas caches e verificar se são iguais.
 int compareCaches(const Cache *cache1, const Cache *cache2) {
     return strcmp(cache1->code, cache2->code);
 }
 // Limpa as caches da memória.
-void clearGeocaches(int *geocacheCount) {
+void clearCaches(int *geocacheCount) {
     *geocacheCount = 0;
     printf("\n\033[1;33mGeocaches cleared.\n\033[0m");
 }

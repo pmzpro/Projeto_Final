@@ -12,7 +12,7 @@ int compareCaches(const Cache *cache1, const Cache *cache2) {
     return strcmp(cache1->code, cache2->code);
 }
 // Limpa as caches da memória.
-void clearGeocaches(int *geocacheCount) {
+void clearCaches(int *geocacheCount) {
     *geocacheCount = 0;
     printf("\n\033[1;33mGeocaches cleared.\n\033[0m");
 }
@@ -196,7 +196,7 @@ int main() {
                 break;
             case 2:
             //Função CLEAR - limpa os dados da memória.
-                clearGeocaches(&geocacheCount);
+                clearCaches(&geocacheCount);
                 break;
             case 3:
             //Função LIST - mostra os dados que estão carregados na memória.

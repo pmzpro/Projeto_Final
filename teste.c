@@ -17,7 +17,7 @@ int compareCaches(const Cache *cache1, const Cache *cache2) {
 }
 
 // Limpa as caches da memória.
-void clearGeocaches(int *geocacheCount) {
+void clearCaches(int *geocacheCount) {
     *geocacheCount = 0;
     printf("\n\033[1;33mGeocaches cleared.\n\033[0m");
 }

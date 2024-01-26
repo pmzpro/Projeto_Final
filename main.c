@@ -8,10 +8,10 @@
 int main() {
     // Variaveis 
     Cache geocaches[MAX_CODES];
-    int geocacheCount = 0;
+    int cachesLoaded = 0;
     int menuOption;
     char file[256];
-    int fileLoaded = 0;
+    int cachesLoaded = 0;
 
 
     do {
@@ -26,52 +26,52 @@ int main() {
         switch(menuOption) {
             case 1:
             //Função LOAD - lê o ficheiro e guarda os dados na memória.
-                if (fileLoaded > 0) {
+                if (cachesLoaded > 0) {
                 printf("\n\033[1;33mCache data exists. Please clear it first.\n\033[0m");
                  } else {
-                fileLoaded += 1;
+                cachesLoaded += 1;
                 printf("\n\033[1;33mEnter filename: \033[0m");
                 scanf("%255s", file);
-                getGeocaches(file, geocaches, &geocacheCount);
+                getGeocaches(file, geocaches, &cachesLoaded);
                  } 
                 break;
             case 2:
             //Função CLEAR - limpa os dados da memória.
-                clearGeocaches(&geocacheCount);
-                fileLoaded = 0;
+                clearCaches(&cachesLoaded);
+                cachesLoaded = 0;
                 break;
             case 3:
             //Função LIST - mostra os dados que estão carregados na memória.
-                listGeocaches(geocaches, geocacheCount);
+                listGeocaches(geocaches, cachesLoaded);
                 break;
             case 4:
             //Função FOUNP - mostra a percentagem de aparecimento da cache.
-                foundPGeocaches(geocaches, geocacheCount);
+                foundPGeocaches(geocaches, cachesLoaded);
                 break;
             case 5:
             //Função SEARCH - procura uma geocache pelo código
-                searchGeocache(geocaches, geocacheCount);
+                searchGeocache(geocaches, cachesLoaded);
                 break;
             case 6:
             // Função EDIT - edita informações de uma geocache
-                editGeocache(geocaches, geocacheCount);
+                editGeocache(geocaches, cachesLoaded);
                 break;
             case 7:
             // Função CENTER - calcula média e desvio padrão das latitudes e longitudes
-                center(geocaches, geocacheCount);
+                center(geocaches, cachesLoaded);
                 break;
             case 8:
                 // Chamar a função AGE
-                STATEC(geocaches,geocacheCount);
+                STATEC(geocaches,cachesLoaded);
                 break;
             case 9:
-                SAVE(geocaches, geocacheCount);
+                SAVE(geocaches, cachesLoaded);
                 break;
             case 10:
-                M81(geocaches, geocacheCount);
+                M81(geocaches, cachesLoaded);
                 break;
             case 11:
-                SORT(geocaches, geocacheCount);
+                SORT(geocaches, cachesLoaded);
                 break;
             case 0:
             //Função QUIT - Termina o programa.
