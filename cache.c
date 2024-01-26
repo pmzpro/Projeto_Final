@@ -7,8 +7,6 @@
 #define MAX_LINE_LENGTH 1024
 Cache geocaches[MAX_CODES];
 
-
-
 // Função (FoundP) para comparar duas caches e verificar se são iguais.
 int compareCaches(const Cache *cache1, const Cache *cache2) {
     return strcmp(cache1->code, cache2->code);
@@ -23,7 +21,6 @@ void clearCaches(int *cachesLoaded) {
     } else if (verifyCache == 0){ // Se não existir cache vai informar que não existe nada para limpar
         printf("\nNo geocaches to clear.\n");
     }
-    
    
 }
  
@@ -386,14 +383,14 @@ void SAVE(const Cache geocaches[], int cachesLoaded) {
     FILE *checkFile = fopen(fileName, "r");
     if (checkFile != NULL) {
         fclose(checkFile);
-        printf("\n\033[1;31mFile with the same name already exists. Save aborted.\n");
+        printf("\nFile with the same name already exists. Save aborted.\n");
         return;
     }
 
     // Abrir o arquivo para escrita
     FILE *file = fopen(fileName, "w");
     if (!file) {
-        printf("\n\033[1;31mError opening file for writing.\n");
+        printf("\nError opening file for writing.\n");
         return;
     }
 

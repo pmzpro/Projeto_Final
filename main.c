@@ -20,7 +20,7 @@ int main() {
     char file[256];
 
     do {
-        printMenu(); // Call the function to print the menu
+        printMenu(); // Função para apresentar o menu
         scanf("%d", &menuOption);
         getchar();
 
@@ -34,13 +34,13 @@ int main() {
                     getGeocaches(file, geocaches, &cachesLoaded);
                  } 
                 break;
-            case 2: // CLEAR function
+            case 2: // Função CLEAR - limpa as geocaches carregadas na memória.
                 clearCaches(&cachesLoaded);
                 break;
-            case 3: // LIST function
+            case 3: // Função list - mostra a lista de geocaches em tabela
                 listGeocaches(geocaches, cachesLoaded);
                 break;
-            case 4: // FOUNDP function
+            case 4: // Função FoundP - mostra a percentagem de aparecimento das caches.
                 foundPGeocaches(geocaches, cachesLoaded);
                 break;
             case 5:
@@ -56,7 +56,7 @@ int main() {
                 center(geocaches, cachesLoaded);
                 break;
             case 8:
-                // Chamar a função AGE
+                // FUNÇÃO STATEC
                 STATEC(geocaches,cachesLoaded);
                 break;
             case 9:
@@ -68,7 +68,7 @@ int main() {
             case 11:
                 SORT(geocaches, cachesLoaded);
                 break;
-            case 0: // QUIT function
+            case 0: // Função quit
                 printf("\nExit Success!\n");
                 printf("\n");
                 return EXIT_SUCCESS;
@@ -76,7 +76,7 @@ int main() {
                 printf("\nInvalid option. Please try again with a valid command.\n");
         }
         
-    } while (menuOption != 0); // The menu is displayed until the QUIT option (0) is selected.
+    } while (menuOption != 0); // O menu é mostrado até que o utilizador selecione a opção 0 = exit.
     
     return EXIT_SUCCESS;
 }
