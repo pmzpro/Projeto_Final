@@ -8,10 +8,9 @@
 int main() {
     // Variaveis 
     Cache geocaches[MAX_CODES];
-    int geocacheCount = 0;
+    int cachesLoaded = 0;
     int menuOption;
     char file[256];
-    int fileLoaded = 0;
 
 
     do {
@@ -24,32 +23,27 @@ int main() {
         getchar(); // Limpa o buffer do teclado
 
         switch(menuOption) {
-            case 1:
-            //Função LOAD - lê o ficheiro e guarda os dados na memória.
-                if (fileLoaded > 0) {
+            case 1: //Função LOAD - lê o ficheiro e guarda os dados na memória.
+
+                if (cachesLoaded > 0) {
                 printf("\nCache data exists. Please clear it first.\n");
                  } else {
-                fileLoaded += 1;
                 printf("\nEnter filename: ");
                 scanf("%255s", file);
-                getGeocaches(file, geocaches, &geocacheCount);
+                getGeocaches(file, geocaches, &cachesLoaded);
                  } 
                 break;
-            case 2:
-            //Função CLEAR - limpa os dados da memória.
-                clearGeocaches(&geocacheCount);
-                fileLoaded = 0;
+            case 2://Função CLEAR - limpa os dados da memória.
+                clearGeocaches(&cachesLoaded);
+                // fileLoaded = 0;
                 break;
-            case 3:
-            //Função LIST - mostra os dados que estão carregados na memória.
-                listGeocaches(geocaches, geocacheCount);
+            case 3://Função LIST - mostra os dados que estão carregados na memória.
+                listGeocaches(geocaches, cachesLoaded);
                 break;
-            case 4:
-            //Função FOUNP - mostra a percentagem de aparecimento da cache.
-                foundPGeocaches(geocaches, geocacheCount);
+            case 4://Função FOUNP - mostra a percentagem de aparecimento da cache.
+                foundPGeocaches(geocaches, cachesLoaded);
                 break;
-            case 0:
-            //Função QUIT - Termina o programa.
+            case 0://Função QUIT - Termina o programa.
                 printf("\nExit Success!\n");
                 printf("\n");
                 return EXIT_SUCCESS;
